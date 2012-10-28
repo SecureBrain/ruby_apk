@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "ruby_apk"
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["SecureBrain"]
@@ -54,7 +54,7 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/utils_spec.rb"
   ]
-  s.homepage = "http://www.securebrain.co.jp/"
+  s.homepage = "https://github.com/SecureBrain/ruby_apk/"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.24"
