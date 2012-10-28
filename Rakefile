@@ -15,7 +15,7 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "ruby_apk"
-  gem.homepage = "http://www.securebrain.co.jp/"
+  gem.homepage = "https://github.com/SecureBrain/ruby_apk/"
   gem.license = "MIT"
   gem.summary = %Q{static analysis tool for android apk}
   gem.description = %Q{static analysis tool for android apk}

@@ -70,7 +70,10 @@ Android Apk static analysis library for Ruby.
 
 	# listing all class names
 	dex.classes do |cls| # cls is Android::Dex::ClassInfo
-		puts cls.name
+		puts "class: #{cls.name}"
+		cls.virtual_methods.each do |m| # Android::Dex::MethodInfo
+			puts "\t#{m.definition}" # puts method definition
+		end
 	end
 
 #### Parse dex file directly
@@ -79,6 +82,10 @@ Android Apk static analysis library for Ruby.
 
 
 ## ChangeLog
+### 0.4.1
+* fix typo
+* add document
+
 ### 0.4.0
 * add resource parser
 * enhance dex parser
