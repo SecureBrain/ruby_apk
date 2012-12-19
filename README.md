@@ -5,7 +5,7 @@ Android Apk static analysis library for Ruby.
 - ruby(>=1.9.x)
 
 ## Install
-  $ gem install ruby_apk
+    $ gem install ruby_apk
 
 ## Usage
 ### Initialize
