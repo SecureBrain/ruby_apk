@@ -1,4 +1,8 @@
 # ChangeLog
+## 0.4.2
+* fix bugs(#2, #3)
+* divide change log from readme
+
 ## 0.4.1
 * fix typo
 * add document
