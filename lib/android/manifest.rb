@@ -38,6 +38,7 @@ module Android
         @intent_filters = []
         unless elem.elements['intent-filter'].nil?
           elem.elements['intent-filter'].each do |e|
+            next unless e.instance_of? REXML::Element
             @intent_filters << IntentFilter.parse(e)
           end
         end

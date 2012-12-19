@@ -122,6 +122,23 @@ describe Android::Manifest do
       context "with no components" do
         it { should be_empty }
       end
+      context 'with text element in intent-filter element. (issue #3)' do 
+        before do
+          app = REXML::Element.new('application')
+          activity = REXML::Element.new('activity')
+          intent_filter = REXML::Element.new('intent-filter')
+          text = REXML::Text.new('sample')
+
+          intent_filter << text
+          activity << intent_filter
+          app << activity
+          dummy_xml.root << app
+        end
+        it "should have components" do
+          subject.should have(1).items
+        end
+        it { expect { subject }.to_not raise_error }
+      end
     end
   end
 
