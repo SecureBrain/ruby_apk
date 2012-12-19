@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ruby_apk"
-  s.version = "0.4.1"
+  s.version = "0.4.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["SecureBrain"]
-  s.date = "2012-10-28"
+  s.date = "2012-12-19"
   s.description = "static analysis tool for android apk"
   s.email = "info@securebrain.co.jp"
   s.extra_rdoc_files = [
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".rspec",
+    "CHANGELOG.md",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
