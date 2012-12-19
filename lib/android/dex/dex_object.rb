@@ -405,7 +405,7 @@ module Android
         def parse
           @params[:size] = read_sleb
           @params[:list] = read_class_array(EncodedTypeAddrPair, @params[:size].abs)
-          @params[:catch_all_addr] = read_uleb if @params[:size] < 0
+          @params[:catch_all_addr] = read_uleb if @params[:size] <= 0
         end
       end
 
