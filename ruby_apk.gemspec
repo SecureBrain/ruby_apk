@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ruby_apk"
-  s.version = "0.4.2"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["SecureBrain"]
-  s.date = "2012-12-19"
+  s.date = "2013-01-04"
   s.description = "static analysis tool for android apk"
   s.email = "info@securebrain.co.jp"
   s.extra_rdoc_files = [
@@ -44,6 +44,7 @@ Gem::Specification.new do |s|
     "spec/data/sample_classes.dex",
     "spec/data/sample_resources.arsc",
     "spec/data/sample_resources_utf16.arsc",
+    "spec/data/str_resources.arsc",
     "spec/dex/access_flag_spec.rb",
     "spec/dex/dex_object_spec.rb",
     "spec/dex/info_spec.rb",
@@ -58,7 +59,7 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/SecureBrain/ruby_apk/"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.24"
+  s.rubygems_version = "1.8.23"
   s.summary = "static analysis tool for android apk"
 
   if s.respond_to? :specification_version then
