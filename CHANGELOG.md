@@ -1,6 +1,6 @@
 # ChangeLog
 ## 0.5.0
-* implement Android::Resource#find, #res_readable_id, #res_hex_id methods
+* [issue #1] implement Android::Resource#find, #res_readable_id, #res_hex_id methods
 
 ## 0.4.2
 * fix bugs(#2, #3)
