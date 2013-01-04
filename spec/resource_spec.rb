@@ -83,5 +83,74 @@ describe Android::Resource do
         end
       end
     end
+
+    context 'with str_resources.arsc data' do
+      let(:res_data) { File.read(File.expand_path(File.dirname(__FILE__) + '/data/str_resources.arsc')) }
+      subject { resource }
+      describe '#packages' do
+        subject {resource.packages}
+        it { should be_instance_of Hash}
+        it { subject.size.should eq 1 }
+      end
+      describe 'ResTablePackage' do
+        subject { resource.packages.first[1] }
+        it { subject.type(1).should eq 'attr' }
+        it { subject.type(4).should eq 'string' }
+        it { subject.name.should eq 'com.example.sample.ruby_apk' }
+      end
+      describe '#find' do
+        it '@0x7f040000 should return "sample.ruby_apk"' do
+          subject.find('@0x7f040000').should eq 'sample application'
+        end
+        it '@string/app_name should return "sample.ruby_apk"' do
+          subject.find('@string/app_name').should eq 'sample application'
+        end
+        it '@string/hello_world should return "Hello world!"' do
+          subject.find('@string/hello_world').should eq 'Hello world!'
+        end
+        it '@string/app_name should return "sample.ruby_apk"' do
+          subject.find('@string/app_name').should eq 'sample application'
+        end
+        it '@string/app_name with {:lang => "ja"} should return "サンプルアプリ"' do
+          subject.find('@string/app_name', :lang => 'ja').should eq 'サンプルアプリ'
+        end
+        it '@string/hello_world with {:lang => "ja"} should return nil' do
+          subject.find('@string/hello_world', :lang => 'ja').should be_nil
+        end
+        context 'assigns not exist string resource id' do
+          it {  expect {subject.find('@string/not_exist') }.to raise_error Android::NotFoundError }
+          it {  expect {subject.find('@0x7f040033') }.to raise_error Android::NotFoundError }
+        end
+        context 'assigns not string resource id' do
+          it { subject.find('@layout/activity_main').should be_nil }
+        end
+        context 'assigns invalid format id' do
+          it '"@xxyyxxyy" should raise ArgumentError' do
+            expect{ subject.find('@xxyyxxyy') }.to raise_error(ArgumentError)
+          end
+          it '"@0xff112233445566" should raise ArgumentError' do
+            expect{ subject.find('@0xff112233445566') }.to raise_error(ArgumentError) 
+          end
+        end
+      end
+      describe '#res_readable_id' do
+        it { subject.res_readable_id('@0x7f040000').should eq '@string/app_name' }
+        context 'assigns invalid type' do
+          it { expect{subject.res_readable_id('@0x7f0f0000')}.to raise_error Android::NotFoundError }
+        end
+        context 'assigns invalid key' do
+          it { expect{subject.res_readable_id('@0x7f040033')}.to raise_error Android::NotFoundError }
+        end
+      end
+      describe '#res_hex_id' do
+        it { subject.res_hex_id('@string/app_name').should eq '@0x7f040000' }
+        context 'assigns invalid type' do
+          it { expect{subject.res_readable_id('@not_exist/xxxx')}.to raise_error Android::NotFoundError }
+        end
+        context 'assigns invalid key' do
+          it { expect{subject.res_readable_id('@string/not_exist')}.to raise_error Android::NotFoundError }
+        end
+      end
+    end
   end
 end
