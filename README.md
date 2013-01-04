@@ -72,6 +72,22 @@ end
   rsc = Android::Resource.new(rsc_data)
 ```
 
+### Resolve resource id
+This feature supports only srting resources for now.
+
+```ruby
+  apk = Android::Apk.new('sample.apk')
+  # assigns readable resource id
+  puts rsc.find('@string/app_name') # => 'application name'
+
+  # assigns hex resource id
+  puts rsc.find('@0x7f040000') # => 'application name'
+
+  # you can set lang attribute.
+  puts rsc.find('@0x7f040000', :lang => 'ja')
+```
+
+
 ### Dex
 #### Extract dex information
 ```ruby
