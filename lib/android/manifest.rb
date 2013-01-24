@@ -197,6 +197,12 @@ module Android
       @doc.elements['/manifest/uses-sdk'].attributes['minSdkVersion'].to_i
     end
 
+    # application label
+    # @return [String] application label string or resource id (like @0x7f04001)
+    def label
+      @doc.elements['/manifest/application'].attributes['label']
+    end
+
     # return xml as string format
     # @param [Integer] indent size(bytes)
     # @return [String] raw xml string

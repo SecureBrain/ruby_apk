@@ -168,6 +168,10 @@ describe Android::Manifest do
       subject { manifest.min_sdk_ver}
       it { should == 10 }
     end
+    describe "#label" do
+      subject { manifest.label }
+      it { should == "@0x7f040001" }
+    end
     describe "#to_xml" do
       let(:raw_xml){ str = <<EOS
 <manifest xmlns:android='http://schemas.android.com/apk/res/android' android:versionCode='101' android:versionName='1.0.1-malware2' package='example.app.sample'>
