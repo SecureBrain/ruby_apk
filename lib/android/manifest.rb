@@ -144,6 +144,9 @@ module Android
     #################################
     # Manifest class definitions
     #################################
+    #
+    # @return [REXML::Document] manifest xml
+    attr_reader :doc
 
     # @param [String] data binary data of AndroidManifest.xml
     def initialize(data)
