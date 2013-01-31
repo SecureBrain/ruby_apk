@@ -77,6 +77,8 @@ This feature supports only srting resources for now.
 
 ```ruby
   apk = Android::Apk.new('sample.apk')
+  rsc = apk.resource
+  
   # assigns readable resource id
   puts rsc.find('@string/app_name') # => 'application name'
 
