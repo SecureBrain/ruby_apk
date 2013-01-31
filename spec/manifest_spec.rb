@@ -187,7 +187,7 @@ describe Android::Manifest do
     <uses-sdk android:minSdkVersion='10'/>
     <uses-permission android:name='android.permission.INTERNET'/>
     <uses-permission android:name='android.permission.WRITE_EXTERNAL_STORAGE'/>
-    <application android:label='@0x7f040001' android:icon='@0x7f020000' android:debuggable='true'>
+    <application android:label='@0x7f040001' android:icon='@0x7f020000' android:debuggable='false'>
         <activity android:label='@0x7f040001' android:name='example.app.sample.SampleActivity'>
             <intent-filter>
                 <action android:name='android.intent.action.MAIN'/>

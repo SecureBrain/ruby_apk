@@ -167,7 +167,7 @@ module Android
         when VAL_TYPE_INT_HEX
           value = "%#x" % val
         when VAL_TYPE_INT_BOOLEAN
-          value = val != 0xFFFFFFFE ? true : false # ugh! is it ok??
+          value = ((val != 0xFFFFFFFF) || (val==1)) ? true : false
         else
           value = "[%#x, flag=%#x]" % [val, flags]
         end
