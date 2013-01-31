@@ -33,6 +33,11 @@ describe Android::Manifest do
         it { should have(2).item }
       end
     end
+    describe '#elem' do
+      subject { Android::Manifest::Component.new(elem).elem }
+      let(:elem) { REXML::Element.new('service') }
+      it { should eq elem }
+    end
 
     describe Android::Manifest::Meta do
       let(:elem) do

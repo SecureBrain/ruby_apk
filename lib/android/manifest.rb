@@ -28,11 +28,15 @@ module Android
       attr_reader :intent_filters
       # @return [Array<Manifest::Meta>]
       attr_reader :metas
+      # @return [REXML::Element]
+      attr_reader :elem
+
 
       # @param [REXML::Element] elem target element
       # @raise [ArgumentError] when elem is invalid.
       def initialize(elem)
         raise ArgumentError unless Component.valid?(elem)
+        @elem = elem
         @type = elem.name
         @name = elem.attributes['name']
         @intent_filters = []
