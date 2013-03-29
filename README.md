@@ -96,12 +96,12 @@ This feature supports only srting resources for now.
   apk = Android::Apk.new('sample.apk')
   dex = apk.dex
   # listing string table in dex
-  dex.strings do |str|
+  dex.strings.each do |str|
     puts str
   end
 
   # listing all class names
-  dex.classes do |cls| # cls is Android::Dex::ClassInfo
+  dex.classes.each do |cls| # cls is Android::Dex::ClassInfo
     puts "class: #{cls.name}"
     cls.virtual_methods.each do |m| # Android::Dex::MethodInfo
       puts "\t#{m.definition}" # puts method definition
