@@ -1,6 +1,6 @@
 # ChangeLog
 ## 0.5.1
-* [#8] ass Android::Manifest#label
+* [#8] add Android::Manifest#label
 * [#7] fix wrong boolean value in manifest parser
 * [#6] add accessor Android::Manifest#doc
 
