@@ -46,3 +46,5 @@ doc
 
 # For rubinius:
 #*.rbc
+
+pkg/
