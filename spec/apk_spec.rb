@@ -265,4 +265,15 @@ describe Android::Apk do
       end
     end
   end
+
+  describe "#icon" do
+    context "with real apk file" do
+      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample.apk') }
+      subject { apk.icon }
+      it { should be_a Hash }
+      it { should have(3).items }
+      it { subject.keys.should =~ ["res/drawable-hdpi/ic_launcher.png", "res/drawable-ldpi/ic_launcher.png", "res/drawable-mdpi/ic_launcher.png"]
+ }
+    end
+  end
 end

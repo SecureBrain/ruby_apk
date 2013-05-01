@@ -150,6 +150,19 @@ module Android
       end
       found
     end
+
+    # extract icon data from AndroidManifest and resource.
+    # @return [Hash{ String => String }] hash key is icon filename. value is image data
+    # @raise [NotFoundError]
+    def icon
+      icon_id = @manifest.doc.elements['/manifest/application'].attributes['icon']
+      if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ icon_id
+        drawables = @resource.find(icon_id)
+        Hash[drawables.map {|name| [name, file(name)] }]
+      else 
+        { icon_id => file(icon_id) } # ugh!: not tested!!
+      end
+    end
   end
 end
 

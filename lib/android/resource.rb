@@ -123,7 +123,7 @@ module Android
       # @option opts [String] :contry cantry code like 'jp'...
       # @raise [ArgumentError] invalid id format
       # @note
-      #  This method only support string resource for now.
+      #  This method only support string and drawable resource for now.
       # @note
       #  Always return nil if assign not string type res id.
       #
@@ -132,8 +132,17 @@ module Android
         tid = ((hex_id&0xff0000) >>16)
         key = hex_id&0xffff
 
-        if type(tid) == 'string'
+        case type(tid) 
+        when 'string'
           return find_res_string(key, opts)
+        when 'drawable'
+          drawables = []
+          @types[tid].each do |type|
+            unless type[key].nil?
+              drawables << @global_string_pool.strings[type[key].val.data]
+            end
+          end
+          return drawables
         else
           nil
         end
