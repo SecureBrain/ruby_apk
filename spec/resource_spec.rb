@@ -87,6 +87,20 @@ describe Android::Resource do
     context 'with str_resources.arsc data' do
       let(:res_data) { File.read(File.expand_path(File.dirname(__FILE__) + '/data/str_resources.arsc')) }
       subject { resource }
+      describe 'about drawable resource' do
+        it 'hoge' do
+          table = resource.packages.first[1]
+          p table
+          table.type_strings.each_with_index do |type, id|
+            puts "[0x#{(id+1).to_s(16)}] #{type}"
+          end
+          puts "readable id:" + table.res_readable_id('@0x7f020000')
+        end
+      end
+    end
+    context 'with str_resources.arsc data' do
+      let(:res_data) { File.read(File.expand_path(File.dirname(__FILE__) + '/data/str_resources.arsc')) }
+      subject { resource }
       describe '#packages' do
         subject {resource.packages}
         it { should be_instance_of Hash}

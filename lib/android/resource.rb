@@ -148,6 +148,8 @@ module Android
         end
       end
 
+      def res_types
+      end
       def find_res_string(key, opts={})
         unless opts[:lang].nil?
           string = @res_strings_lang[opts[:lang]]
@@ -492,10 +494,10 @@ module Android
       first_pkg.res_hex_id(readable_id)
     end
 
-    private
     def first_pkg
       @packages.first[1]
     end
+    private
     def parse
       offset = 0
 

@@ -12,6 +12,10 @@ module Android
   #   
   #   /frameworks/base/libs/androidfw/ResourceTypes.cpp
   class AXMLParser
+    def self.axml?(data)
+      (data[0..3] == "\x03\x00\x08\x00")
+    end
+
     # axml parse error
     class ReadError < StandardError; end
 
@@ -81,18 +85,10 @@ module Android
       @io.read(2).unpack("v")[0]
     end
 
-    # parse string table
+    # relace string table parser
     def parse_strings
-      sit_off = 0x24                  # string index table offset
-      st_off = sit_off + @num_str * 4 # string table offset
-      @strings = []
-      @num_str.times do |i|
-        pos = st_off + word(sit_off + (4 * i)) # get position from string index table
-        len = short(pos) # read string length(not bytes)
-        str = @io.read(len*2) # read string(UTF-16LE)
-        str.force_encoding(Encoding::UTF_16LE)
-        @strings[i] = str.encode(Encoding::UTF_8)
-      end
+      strpool = Resource::ResStringPool.new(@io.string, 8) # ugh!
+      @strings = strpool.strings
     end
 
     # parse tag

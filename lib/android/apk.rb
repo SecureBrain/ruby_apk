@@ -180,6 +180,13 @@ module Android
         label_id # include nil
       end
     end
+
+    # get screen layout xml datas
+    # @return [Hash{ name => Android::Layout }]
+    # @since 0.6.0
+    def layouts
+      @layouts ||= Layout.collect_layouts(self) # lazy parse
+    end
   end
 end
 
