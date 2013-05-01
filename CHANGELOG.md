@@ -1,4 +1,9 @@
 # ChangeLog
+## 0.5.1
+* [#8] ass Android::Manifest#label
+* [#7] fix wrong boolean value in manifest parser
+* [#6] add accessor Android::Manifest#doc
+
 ## 0.5.0
 * [issue #1] implement Android::Resource#find, #res_readable_id, #res_hex_id methods
 
