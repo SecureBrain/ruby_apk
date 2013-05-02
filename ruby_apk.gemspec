@@ -60,7 +60,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.25"
-  s.summary = "static analysis tool for android apk"
+  s.summary = "static analysis tool for android apk."
 
   if s.respond_to? :specification_version then
     s.specification_version = 3

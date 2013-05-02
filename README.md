@@ -30,7 +30,7 @@ end
   elf_files = apk.find{|name, data| data[0..3] == [0x7f, 0x45, 0x4c, 0x46] } # ELF magic number
 ```
 
-#### Extract icon data in Apk
+#### Extract icon data in Apk (since 0.6.0)
 ```ruby
   apk = Android::Apk.new('sample.apk')
   icons = apk.icon # { "res/drawable-hdpi/ic_launcher.png" => "\x89PNG\x0D\x0A...", ... }
@@ -38,7 +38,11 @@ end
     File.open(File.basename(name), 'wb') {|f| f.write data } # save to file.
   end
 ```
-since 0.6.0
+#### Extract application label string (since 0.6.0)
+```ruby
+  apk = Android::Apk.new('sample.apk')
+  puts apk.label
+```
 
 ### Manifest
 #### Get readable xml

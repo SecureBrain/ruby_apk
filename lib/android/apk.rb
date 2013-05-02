@@ -164,6 +164,22 @@ module Android
         { icon_id => file(icon_id) } # ugh!: not tested!!
       end
     end
+
+    # get application label from AndroidManifest and resources.
+    # @param [String] lang language code like 'ja', 'cn', ...
+    # @return [String] application label string
+    # @return [nil] when label is not found
+    # @since 0.6.0
+    def label(lang=nil)
+      label_id = @manifest.label
+      if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ label_id
+        opts = {}
+        opts[:lang] = lang unless lang.nil?
+        @resource.find(label_id, opts)
+      else
+        label_id # include nil
+      end
+    end
   end
 end
 

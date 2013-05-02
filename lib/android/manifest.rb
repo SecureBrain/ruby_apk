@@ -208,7 +208,14 @@ module Android
     # @return [String] application label string or resource id (like @0x7f04001)
     # @since 0.5.1
     def label
-      @doc.elements['/manifest/application'].attributes['label']
+      label = @doc.elements['/manifest/application'].attributes['label']
+      if label.nil?
+        # application element has no label attributes.
+        # so looking for activites that has label attribute.
+        activities = @doc.elements['/manifest/application'].find{|e| e.name == 'activity' && !e.attributes['label'].nil? }
+        label = activities.nil? ? nil : activities.first.attributes['label']
+      end
+      label
     end
 
     # return xml as string format
