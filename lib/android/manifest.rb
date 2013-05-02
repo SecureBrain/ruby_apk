@@ -206,6 +206,7 @@ module Android
 
     # application label
     # @return [String] application label string or resource id (like @0x7f04001)
+    # @since 0.5.1
     def label
       @doc.elements['/manifest/application'].attributes['label']
     end

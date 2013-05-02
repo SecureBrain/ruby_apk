@@ -38,6 +38,7 @@ end
     File.open(File.basename(name), 'wb') {|f| f.write data } # save to file.
   end
 ```
+since 0.6.0
 
 ### Manifest
 #### Get readable xml

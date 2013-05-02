@@ -154,6 +154,7 @@ module Android
     # extract icon data from AndroidManifest and resource.
     # @return [Hash{ String => String }] hash key is icon filename. value is image data
     # @raise [NotFoundError]
+    # @since 0.6.0
     def icon
       icon_id = @manifest.doc.elements['/manifest/application'].attributes['icon']
       if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ icon_id
