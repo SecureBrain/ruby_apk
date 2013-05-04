@@ -1,6 +1,8 @@
 # ruby_apk
 Android Apk static analysis library for Ruby.
 
+[![Build Status](https://travis-ci.org/SecureBrain/ruby_apk.png)](https://travis-ci.org/SecureBrain/ruby_apk)
+
 ## Requirements
 - ruby(>=1.9.x)
 
