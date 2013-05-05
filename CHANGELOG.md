@@ -1,4 +1,8 @@
 # ChangeLog
+## 0.6.0
+* implement Android::Apk#layouts(#10), Android::Apk#icon(#11), Android::Apk#label(#12),
+* fix bug (#13)
+
 ## 0.5.1
 * [#8] add Android::Manifest#label
 * [#7] fix wrong boolean value in manifest parser
