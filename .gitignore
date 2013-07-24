@@ -48,3 +48,6 @@ doc
 #*.rbc
 
 pkg/
+
+# For RubyMine:
+.idea
