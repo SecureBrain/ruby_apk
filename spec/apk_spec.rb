@@ -276,16 +276,4 @@ describe Android::Apk do
  }
     end
   end
-
-  describe "#label" do
-    context "with real apk file" do
-      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample.apk') }
-      subject { apk.label }
-      it { should eq 'Sample' }
-      context 'when assign lang code' do
-        subject { apk.label('ja') }
-        it { should eq 'Sample' }
-      end
-    end
-  end
 end

@@ -153,9 +153,10 @@ module Android
     attr_reader :doc
 
     # @param [String] data binary data of AndroidManifest.xml
-    def initialize(data)
+    def initialize(data, rsc=nil)
       parser = AXMLParser.new(data)
       @doc = parser.parse
+      @rsc = rsc
     end
 
     # used permission array
@@ -205,15 +206,24 @@ module Android
     end
 
     # application label
-    # @return [String] application label string or resource id (like @0x7f04001)
+    # @param [String] lang language code like 'ja', 'cn', ...
+    # @return [String] application label string(if resouce is provided), or label resource id
+    # @return [nil] when label is not found
     # @since 0.5.1
-    def label
+    def label(lang=nil)
       label = @doc.elements['/manifest/application'].attributes['label']
       if label.nil?
         # application element has no label attributes.
         # so looking for activites that has label attribute.
         activities = @doc.elements['/manifest/application'].find{|e| e.name == 'activity' && !e.attributes['label'].nil? }
         label = activities.nil? ? nil : activities.first.attributes['label']
+      end
+      unless @rsc.nil?
+        if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ label
+          opts = {}
+          opts[:lang] = lang unless lang.nil?
+          label = @rsc.find(label, opts)
+        end
       end
       label
     end

@@ -41,11 +41,6 @@ end
     File.open(File.basename(name), 'wb') {|f| f.write data } # save to file.
   end
 ```
-#### Extract application label string (since 0.6.0)
-```ruby
-  apk = Android::Apk.new('sample.apk')
-  puts apk.label
-```
 
 ### Manifest
 #### Get readable xml
@@ -71,6 +66,12 @@ end
   manifest.use_permissions.each do |permission|
     puts permission
   end
+```
+
+#### Extract application label string
+```ruby
+  apk = Android::Apk.new('sample.apk')
+  puts apk.manifest.label
 ```
 
 ### Resource

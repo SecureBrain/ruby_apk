@@ -48,7 +48,13 @@ module Android
       @bindata.force_encoding(Encoding::ASCII_8BIT)
       raise NotApkFileError, "manifest file is not found." if @zip.find_entry(MANIFEST).nil?
       begin
-        @manifest = Android::Manifest.new(self.file(MANIFEST))
+        @resource = Android::Resource.new(self.file(RESOURCE))
+      rescue => e
+        $stderr.puts "failed to parse resource:#{e}"
+        #$stderr.puts e.backtrace
+      end
+      begin
+        @manifest = Android::Manifest.new(self.file(MANIFEST), @resource)
       rescue => e
         $stderr.puts "failed to parse manifest:#{e}"
         #$stderr.puts e.backtrace
@@ -57,12 +63,6 @@ module Android
         @dex = Android::Dex.new(self.file(DEX))
       rescue => e
         $stderr.puts "failed to parse dex:#{e}"
-        #$stderr.puts e.backtrace
-      end
-      begin
-        @resource = Android::Resource.new(self.file(RESOURCE))
-      rescue => e
-        $stderr.puts "failed to parse resource:#{e}"
         #$stderr.puts e.backtrace
       end
     end
@@ -169,16 +169,10 @@ module Android
     # @param [String] lang language code like 'ja', 'cn', ...
     # @return [String] application label string
     # @return [nil] when label is not found
+    # @deprecated move to {Android::Manifest#label}
     # @since 0.6.0
     def label(lang=nil)
-      label_id = @manifest.label
-      if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ label_id
-        opts = {}
-        opts[:lang] = lang unless lang.nil?
-        @resource.find(label_id, opts)
-      else
-        label_id # include nil
-      end
+      @manifest.label
     end
 
     # get screen layout xml datas
