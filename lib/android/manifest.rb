@@ -196,8 +196,16 @@ module Android
 
     # application version name
     # @return [String]
-    def version_name
-      @doc.root.attributes['versionName']
+    def version_name(lang=nil)
+      vername = @doc.root.attributes['versionName']
+      unless @rsc.nil?
+        if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ vername
+          opts = {}
+          opts[:lang] = lang unless lang.nil?
+          vername = @rsc.find(label, opts)
+        end
+      end
+      vername
     end
 
     # @return [Integer] minSdkVersion in uses element
