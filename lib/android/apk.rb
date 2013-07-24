@@ -181,6 +181,18 @@ module Android
       end
     end
 
+    # get application version name from AndroidManifest
+    # @return [String] application version name string
+    # @return [nil] when version is not found
+    def version_name
+      version_id = @manifest.version_name
+      if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ version_id
+        @resource.find(version_id)
+      else
+        version_id # include nil
+      end
+    end
+
     # get screen layout xml datas
     # @return [Hash{ name => Android::Layout }]
     # @since 0.6.0

@@ -46,6 +46,11 @@ end
   apk = Android::Apk.new('sample.apk')
   puts apk.label
 ```
+#### Extract application version
+```ruby
+  apk = Android::Apk.new('sample.apk')
+  puts apk.version_name
+```
 
 ### Manifest
 #### Get readable xml
