@@ -202,7 +202,7 @@ module Android
         if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ vername
           opts = {}
           opts[:lang] = lang unless lang.nil?
-          vername = @rsc.find(label, opts)
+          vername = @rsc.find(vername, opts)
         end
       end
       vername
