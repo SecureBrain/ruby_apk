@@ -68,7 +68,6 @@ module Android
     end
 
 
-    private
     # read one word(4byte) as integer
     # @param [Integer] offset offset from top position. current position is used if ofset is nil
     # @return [Integer] little endian word value
@@ -163,7 +162,7 @@ module Android
         when VAL_TYPE_INT_HEX
           value = "%#x" % val
         when VAL_TYPE_INT_BOOLEAN
-          value = ((val != 0xFFFFFFFF) || (val==1)) ? true : false
+          value = ((val == 0xFFFFFFFF) || (val==1)) ? true : false
         else
           value = "[%#x, flag=%#x]" % [val, flags]
         end

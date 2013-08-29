@@ -43,4 +43,25 @@ describe Android::AXMLParser do
       it { should include("manifest") }
     end
   end
+
+  describe '#convert_value' do
+    let(:axmlparser){ Android::AXMLParser.new('') }
+    subject { axmlparser.convert_value(str_id, flags, val) }
+    context 'when parsing boolean attribute' do
+      let(:str_id) { 0xFFFFFFFF }
+      let(:flags) { 0x12000008 } 
+      context 'and value is 0x01' do
+        let(:val) { 0x01 }
+        it { should be_true }
+      end
+      context 'and value is 0xFFFFFFF' do
+        let(:val) { 0xFFFFFFFF }
+        it { should be_true }
+      end
+      context 'and value is 0x00' do
+        let(:val) { 0x00 }
+        it { should be_false }
+      end
+    end
+  end
 end
