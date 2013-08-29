@@ -2,7 +2,7 @@
 module Android
   class Dex
     # parsing dex object
-    # @see http://source.android.com/tech/dalvik/dex-format.html
+    # @see http://source.android.com/devices/tech/dalvik/dex-format.html
     class DexObject
       # @return [Integer] object size
       attr_reader :size
@@ -106,7 +106,7 @@ module Android
 
       public
       # header_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class Header < DexObject
         def initialize(data)
           super(data, 0)
@@ -132,7 +132,7 @@ module Android
       end
 
       # map_list
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class MapList < DexObject
         private
         def parse
@@ -142,7 +142,7 @@ module Android
       end
 
       # map_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class MapItem < DexObject
         private
         def parse
@@ -154,7 +154,7 @@ module Android
       end
 
       # id_list
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class IdsList < DexObject
         attr_reader :ids_size
         def initialize(data, off, ids_size)
@@ -164,7 +164,7 @@ module Android
       end
 
       # string_id_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class StringIdItem < IdsList
         private
         def parse
@@ -173,7 +173,7 @@ module Android
       end
 
       # string_data_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class StringDataItem < DexObject
         def to_s
           @params[:data]
@@ -186,7 +186,7 @@ module Android
       end
 
       # type_id_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class TypeIdItem < IdsList
         def [](idx)
           raise ArgumentError if idx >= @params[:descriptor_idx].size or idx < 0
@@ -200,7 +200,7 @@ module Android
       end
 
       # proto_id_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class ProtoIdItem < DexObject
         # return parse data size
         # @return bytes
@@ -217,7 +217,7 @@ module Android
       end
 
       # field_id_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class FieldIdItem < DexObject
         # return parse data size
         # @return bytes
@@ -234,7 +234,7 @@ module Android
       end
 
       # method_id_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class MethodIdItem < DexObject
         # return parse data size
         # @return bytes
@@ -250,7 +250,7 @@ module Android
       end
 
       # class_def_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       # @!attribute [r] class_data_item
       #  @return [ClassDataItem] class_data_item of this class
       class ClassDefItem < DexObject
@@ -284,7 +284,7 @@ module Android
       end
 
       # class_data_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class ClassDataItem < DexObject
         private
         def parse
@@ -300,7 +300,7 @@ module Android
       end
 
       # encoded_field
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class EncodedField < DexObject
         private
         def parse
@@ -310,7 +310,7 @@ module Android
       end
 
       # encoded_method
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       # @!attribute [r] code_item
       #  @return [CodeItem] code_item of the method
       class EncodedMethod < DexObject
@@ -335,7 +335,7 @@ module Android
 
 
       # type_list
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class TypeList < DexObject
         private
         def parse
@@ -345,7 +345,7 @@ module Android
       end
 
       # code_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       # @!attribute [r] debug_info_item
       #  @return [DebugInfoItem] debug_info_item of this code
       class CodeItem < DexObject
@@ -378,7 +378,7 @@ module Android
       end
 
       # try_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class TryItem < DexObject
         private
         def parse
@@ -389,7 +389,7 @@ module Android
       end
 
       # encoded_catch_handler_list
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class EncodedCatchHandlerList < DexObject
         private
         def parse
@@ -399,7 +399,7 @@ module Android
       end
 
       # encoded_catch_handler
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class EncodedCatchHandler < DexObject
         private
         def parse
@@ -410,7 +410,7 @@ module Android
       end
 
       # encoded_type_addr_pair
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class EncodedTypeAddrPair < DexObject
         private
         def parse
@@ -420,7 +420,7 @@ module Android
       end
 
       # debug_info_item
-      # @see http://source.android.com/tech/dalvik/dex-format.html
+      # @see http://source.android.com/devices/tech/dalvik/dex-format.html
       class DebugInfoItem < DexObject
         private
         def parse

@@ -5,7 +5,7 @@ require_relative 'dex/utils'
 
 module Android
   # parsed dex object
-  # @see http://source.android.com/tech/dalvik/dex-format.html
+  # @see http://source.android.com/devices/tech/dalvik/dex-format.html
   # @attr_reader strings [Array<String>] strings in dex file.
   class Dex
     # @return [Dex::Header] dex header information
