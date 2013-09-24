@@ -2,6 +2,7 @@ require 'zip/zip' # need rubyzip gem -> doc: http://rubyzip.sourceforge.net/
 require 'digest/md5'
 require 'digest/sha1'
 require 'digest/sha2'
+require 'openssl'
 
 module Android
   class NotApkFileError < StandardError; end
@@ -176,10 +177,30 @@ module Android
     end
 
     # get screen layout xml datas
-    # @return [Hash{ name => Android::Layout }]
+    # @return [Hash{ String => Android::Layout }] key: laytout file path, value: layout object
     # @since 0.6.0
     def layouts
       @layouts ||= Layout.collect_layouts(self) # lazy parse
+    end
+
+    # apk's signature information
+    # @return [Hash{ String => OpenSSL::PKCS7 } ] key: sign file path, value: signature
+    # @since 0.7.0
+    def signs
+      signs = {}
+      self.each_file do |path, data|
+        # find META-INF/xxx.{RSA|DSA}
+        next unless path =~ /^META-INF\// && data.unpack("CC") == [0x30, 0x82]
+        signs[path] = OpenSSL::PKCS7.new(data)
+      end
+      signs
+    end
+
+    # certificate info which is used for signing
+    # @return [Hash{String => OpenSSL::X509::Certificate }] key: sign file path, value: first certficate in the sign file
+    # @since 0.7.0
+    def certificates
+      return Hash[self.signs.map{|path, sign| [path, sign.certificates.first] }]
     end
   end
 end

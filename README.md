@@ -42,6 +42,23 @@ end
   end
 ```
 
+#### Extract signature and certificate information from Apk (since v0.7.0)
+```ruby
+  apk = Android::Apk.new('sample.apk')
+  signs = apk.signs # retrun Hash(key: signature file path, value: OpenSSL::PKCS7)
+  signs.each do |path, sign|
+    puts path # => "MATA-INF/CERT.RSA" or ...
+    puts sign # => "-----BEGIN PKCS7-----\n..." PKCS7 object
+  end
+
+  certs = apk.certificates # retrun Hash(key: signature file path, value: OpenSSL::X509::Certificate)
+  certs.each do |path, cert|
+    puts path # => "MATA-INF/CERT.RSA" or ...
+    puts cert # => "-----BEGIN CERTIFICATE-----\n..." # X509::Certificate object
+  end
+```
+Note: Most apks have only one signature and cerficate.
+
 ### Manifest
 #### Get readable xml
 ```ruby

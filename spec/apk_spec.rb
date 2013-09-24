@@ -276,4 +276,26 @@ describe Android::Apk do
  }
     end
   end
+
+  describe '#signs' do
+    context 'with sampe apk file' do
+      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample.apk') }
+      subject { apk.signs }
+      it { should be_a Hash }
+      it { should have(1).item }
+      it { should have_key('META-INF/CERT.RSA') }
+      it { subject['META-INF/CERT.RSA'].should be_a OpenSSL::PKCS7 }
+    end
+  end
+
+  describe '#certficates' do
+    context 'with sampe apk file' do
+      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample.apk') }
+      subject { apk.certificates }
+      it { should be_a Hash }
+      it { should have(1).item }
+      it { should have_key('META-INF/CERT.RSA') }
+      it { subject['META-INF/CERT.RSA'].should be_a OpenSSL::X509::Certificate }
+    end
+  end
 end
