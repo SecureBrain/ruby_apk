@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ruby_apk"
-  s.version = "0.6.0"
+  s.version = "0.7.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["SecureBrain"]
-  s.date = "2013-05-05"
+  s.date = "2013-09-24"
   s.description = "static analysis tool for android apk"
   s.email = "info@securebrain.co.jp"
   s.extra_rdoc_files = [
@@ -61,11 +61,11 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/SecureBrain/ruby_apk/"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.16"
+  s.rubygems_version = "2.0.6"
   s.summary = "static analysis tool for android apk"
 
   if s.respond_to? :specification_version then
-    s.specification_version = 3
+    s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rubyzip>, [">= 0"])
