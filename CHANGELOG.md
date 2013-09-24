@@ -1,4 +1,8 @@
 # ChangeLog
+## 0.7.0
+* implement Apk#signs, Apk#certificates and Manifest#version_name (#14, #15)
+* bugfix
+
 ## 0.6.0
 * implement Android::Apk#layouts(#10), Android::Apk#icon(#11), Android::Apk#label(#12),
 * fix bug (#13)
