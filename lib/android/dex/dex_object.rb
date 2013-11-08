@@ -179,9 +179,49 @@ module Android
           @params[:data]
         end
         private
+        def mutf8_to_utf8(data, off, ulen)
+          mi = 0 # index of mutf8 data
+          codepoints = []
+          while ulen > 0 do
+            b0 = data[off + mi].ord
+            bu = (b0 & 0xf0) # b0's upper nibble
+            if (b0 & 0x80) == 0 # single byte encoding (0b0xxx_xxxx)
+              c = b0
+              mi += 1
+              ulen -= 1
+            elsif bu == 0xc0 || bu == 0xd0 # two-byte encoding (0b110x_xxxx)
+              b1 = data[off + mi + 1].ord
+              c = (b0 & 0x1f) << 6 | (b1 & 0x3f)
+              mi += 2
+              ulen -= 1
+            elsif bu == 0xe0 # three-byte encoding (0b1110_xxxx)
+              b1 = data[off + mi + 1].ord
+              b2 = data[off + mi + 2].ord
+              c = (b0 & 0x0f) << 12 | (b1 & 0x3f) << 6 | (b2 & 0x3f)
+              mi += 3
+              ulen -= 1
+              if 0xD800 <= c && c <= 0xDBFF  # this must be a surrogate pair
+                b4 = data[off + mi + 1].ord
+                b5 = data[off + mi + 2].ord
+                c = ((b1 & 0x0f) + 1) << 16 | (b2 & 0x3f) << 10 | (b4 & 0x0f) << 6 | (b5 & 0x3f)
+                mi += 3
+                ulen -= 1
+              end
+            else
+              STDERR.puts "unsupported byte: 0x#{'%02X' % b0} @#{mi}"
+              c = 0
+              mi += 1
+              next
+            end
+            if c != 0
+              codepoints << c
+            end
+          end
+          codepoints.pack("U*")
+        end
         def parse
           @params[:utf16_size] = read_uleb
-          @params[:data] = @data[@offset + @parsing_off, @params[:utf16_size]]
+          @params[:data] = mutf8_to_utf8(@data, @offset + @parsing_off, @params[:utf16_size])
         end
       end
 
