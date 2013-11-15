@@ -102,4 +102,17 @@ describe Android::Dex do
       it { should match(/\A<Android::Dex::DexObject::Header.*>\Z/m) }
     end
   end
+
+  describe Android::Dex::DexObject::StringDataItem do
+    let(:string_data_item_sample) {
+      sample = "\x0b\x61\x62\x63\xc0\x80\xc8\x85\xe3\x81\x82\xe3\x81\x84\xe3\x81\x86\xed\xa0\x81\xed\xb0\x80\xc0\x80"
+      sample.force_encoding(Encoding::ASCII_8BIT)
+    }
+    let(:string_data_item) { Android::Dex::DexObject::StringDataItem.new(string_data_item_sample, 0) }
+    describe "#to_s" do
+      subject { string_data_item.to_s }
+      it { should == "abc\u{205}\u{3042}\u{3044}\u{3046}\u{10400}" }
+    end
+  end
+
 end
