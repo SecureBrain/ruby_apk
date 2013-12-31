@@ -158,6 +158,26 @@ module Android
       @doc = parser.parse
       @rsc = rsc
     end
+    
+    # supports screens array
+    # @return [Array<String>] screen names
+    # @note return all screen types array when the manifest includes no supports-screens element
+    def supports_screens
+      screens = []
+      unless @doc.elements['/manifest/supports-screens'].attributes['smallScreens'] == "false"
+        screens << "small"
+      end
+      unless @doc.elements['/manifest/supports-screens'].attributes['normalScreens'] == "false"
+        screens << "normal"
+      end
+      unless @doc.elements['/manifest/supports-screens'].attributes['largeScreens'] == "false"
+        screens << "large"
+      end
+      unless @doc.elements['/manifest/supports-screens'].attributes['xlargeScreens'] == "false"
+        screens << "xlarge"
+      end
+      screens.uniq
+    end
 
     # used permission array
     # @return [Array<String>] permission names
@@ -211,6 +231,16 @@ module Android
     # @return [Integer] minSdkVersion in uses element
     def min_sdk_ver
       @doc.elements['/manifest/uses-sdk'].attributes['minSdkVersion'].to_i
+    end
+    
+    # @return [Integer] maxSdkVersion in uses element
+    def max_sdk_ver
+      @doc.elements['/manifest/uses-sdk'].attributes['maxSdkVersion'].to_i
+    end
+    
+    # @return [Integer] targetSdkVersion in uses element
+    def target_sdk_ver
+      @doc.elements['/manifest/uses-sdk'].attributes['targetSdkVersion'].to_i
     end
 
     # application label
