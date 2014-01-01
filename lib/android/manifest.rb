@@ -250,7 +250,7 @@ module Android
     # @return [String] application label string(if resouce is provided), or label resource id
     # @return [nil] when label is not found
     # @since 0.5.1
-    def label(lang=nil)
+    def label(lang=nil, default=true)
       label = @doc.elements['/manifest/application'].attributes['label']
       if label.nil?
         # application element has no label attributes.
@@ -268,7 +268,7 @@ module Android
               opts[:lang] = lang
             end
           end
-          label = @rsc.find(label, opts)
+          label = @rsc.find(label, opts, default)
         end
       end
       label
