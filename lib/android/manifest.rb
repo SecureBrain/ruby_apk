@@ -163,18 +163,20 @@ module Android
     # @return [Array<String>] screen names
     # @note return all screen types array when the manifest includes no supports-screens element
     def supports_screens
-      screens = []
-      unless @doc.elements['/manifest/supports-screens'].attributes['smallScreens'] == "false"
-        screens << "small"
-      end
-      unless @doc.elements['/manifest/supports-screens'].attributes['normalScreens'] == "false"
-        screens << "normal"
-      end
-      unless @doc.elements['/manifest/supports-screens'].attributes['largeScreens'] == "false"
-        screens << "large"
-      end
-      unless @doc.elements['/manifest/supports-screens'].attributes['xlargeScreens'] == "false"
-        screens << "xlarge"
+      screens = ["small", "normal", "large", "xlarge"]
+      unless @doc.elements['/manifest/supports-screens'].nil?
+        if @doc.elements['/manifest/supports-screens'].attributes['smallScreens'] == "false"
+          screens.delete "small"
+        end
+        if @doc.elements['/manifest/supports-screens'].attributes['normalScreens'] == "false"
+          screens.delete "normal"
+        end
+        if @doc.elements['/manifest/supports-screens'].attributes['largeScreens'] == "false"
+          screens.delete "large"
+        end
+        if @doc.elements['/manifest/supports-screens'].attributes['xlargeScreens'] == "false"
+          screens.delete "xlarge"
+        end
       end
       screens.uniq
     end
