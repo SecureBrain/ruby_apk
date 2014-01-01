@@ -127,14 +127,14 @@ module Android
       # @note
       #  Always return nil if assign not string type res id.
       #
-      def find(res_id, opts={})
+      def find(res_id, opts={}, default=true)
         hex_id = strid2int(res_id)
         tid = ((hex_id&0xff0000) >>16)
         key = hex_id&0xffff
 
         case type(tid) 
         when 'string'
-          return find_res_string(key, opts)
+          return find_res_string(key, opts, default)
         when 'drawable'
           drawables = []
           @types[tid].each do |type|
