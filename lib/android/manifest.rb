@@ -261,7 +261,13 @@ module Android
       unless @rsc.nil?
         if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ label
           opts = {}
-          opts[:lang] = lang unless lang.nil?
+          unless lang.nil?
+            if lang.is_a? Hash
+              opts = lang
+            elsif lang.is_a? String
+              opts[:lang] = lang
+            end
+          end
           label = @rsc.find(label, opts)
         end
       end
