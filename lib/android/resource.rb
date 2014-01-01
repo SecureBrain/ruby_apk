@@ -157,7 +157,7 @@ module Android
         unless opts[:contry].nil?
           string = @res_strings_contry[opts[:contry]]
         end
-        unless opts[:contry].nil || opts[:lang].nil?
+        unless opts[:contry].nil? || opts[:lang].nil?
           string = @res_strings_locale["#{opts[:lang]}-#{opts[:contry]}"]
         end
         string = string.nil? && default ? @res_strings_default : {}
