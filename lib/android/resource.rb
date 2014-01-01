@@ -151,14 +151,16 @@ module Android
       def res_types
       end
       def find_res_string(key, opts={}, default=true)
-        unless opts[:lang].nil?
-          string = @res_strings_lang[opts[:lang]]
-        end
-        unless opts[:contry].nil?
-          string = @res_strings_contry[opts[:contry]]
-        end
         unless opts[:contry].nil? || opts[:lang].nil?
           string = @res_strings_locale["#{opts[:lang]}-#{opts[:contry]}"]
+        end
+        if string.nil?
+          unless opts[:lang].nil?
+            string = @res_strings_lang[opts[:lang]]
+          end
+          unless opts[:contry].nil?
+            string = @res_strings_contry[opts[:contry]]
+          end
         end
         string = default ? @res_strings_default : {} if string.nil?
         raise NotFoundError unless string.has_key? key
