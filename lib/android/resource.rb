@@ -482,8 +482,8 @@ module Android
     # @note
     #  Always return nil if assign not string type res id.
     # @since 0.5.0
-    def find(rsc_id, opt={})
-      first_pkg.find(rsc_id, opt)
+    def find(rsc_id, opt={}, default=true)
+      first_pkg.find(rsc_id, opt, default)
     end
 
     # @param [String] hex_id hexoctet format resource id('@0x7f010001')
