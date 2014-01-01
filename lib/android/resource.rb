@@ -160,7 +160,7 @@ module Android
         unless opts[:contry].nil? || opts[:lang].nil?
           string = @res_strings_locale["#{opts[:lang]}-#{opts[:contry]}"]
         end
-        string = string.nil? && default ? @res_strings_default : {}
+        string = default ? @res_strings_default : {} if string.nil?
         raise NotFoundError unless string.has_key? key
         return string[key]
       end
