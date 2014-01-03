@@ -218,13 +218,19 @@ module Android
 
     # application version name
     # @return [String]
-    def version_name(lang=nil)
+    def version_name(lang=nil, default=true)
       vername = @doc.root.attributes['versionName']
       unless @rsc.nil?
         if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ vername
           opts = {}
-          opts[:lang] = lang unless lang.nil?
-          vername = @rsc.find(vername, opts)
+          unless lang.nil?
+            if lang.is_a? Hash
+              opts = lang
+            elsif lang.is_a? String
+              opts[:lang] = lang
+            end
+          end
+          vername = @rsc.find(vername, opts, default)
         end
       end
       vername
