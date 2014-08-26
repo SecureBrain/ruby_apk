@@ -1,4 +1,4 @@
-require 'zip/zip' # need rubyzip gem -> doc: http://rubyzip.sourceforge.net/
+require 'zip' # need rubyzip gem -> doc: http://rubyzip.sourceforge.net/
 require 'digest/md5'
 require 'digest/sha1'
 require 'digest/sha2'
