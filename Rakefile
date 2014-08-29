@@ -19,8 +19,8 @@ Jeweler::Tasks.new do |gem|
   gem.license = "MIT"
   gem.summary = %Q{static analysis tool for android apk}
   gem.description = %Q{static analysis tool for android apk}
-  gem.email = "thetajchert@gmail.com"
-  gem.authors = ["Michal Tajchert","SecureBrain"]
+  gem.email = "info@securebrain.co.jp"
+  gem.authors = ["SecureBrain"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
