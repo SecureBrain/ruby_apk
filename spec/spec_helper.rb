@@ -5,7 +5,7 @@ SimpleCov.start do
   add_filter "/spec"
 end
 require 'rspec'
-require 'ruby_apk'
+require 'ruby_android'
 
 
 # Requires supporting files with custom matchers and macros, etc,

@@ -19,8 +19,13 @@ Jeweler::Tasks.new do |gem|
   gem.license = "MIT"
   gem.summary = %Q{static analysis tool for android apk}
   gem.description = %Q{static analysis tool for android apk}
+<<<<<<< Updated upstream
+  gem.email = "info@securebrain.co.jp"
+  gem.authors = ["SecureBrain"]
+=======
   gem.email = "thetajchert@gmail.com"
   gem.authors = ["Michal Tajchert","SecureBrain"]
+>>>>>>> Stashed changes
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
