@@ -6,11 +6,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ruby_android"
-  s.version = "0.7.3"
+  s.version = "0.7.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
-  s.authors = ["Michal Tajchert", "SecureBrain"]
+  s.authors = ["Michal Tajchert", "Kamil Trzcinski", "SecureBrain"]
   s.date = "2014-08-29"
   s.description = "static analysis tool for android apk"
   s.email = "thetajchert@gmail.com"
