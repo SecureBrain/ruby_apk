@@ -255,6 +255,7 @@ module Android
       private :parse
 
       def extract_res_strings
+        @res_strings_default = {}
         @res_strings_lang = {}
         @res_strings_contry = {}
         begin
@@ -275,10 +276,10 @@ module Android
           lang = type.config.locale_lang
           contry = type.config.locale_contry
           if lang.nil? && contry.nil?
-            @res_strings_default = str_hash
+            @res_strings_default.merge!(str_hash)
           else
-            @res_strings_lang[lang] = str_hash unless lang.nil?
-            @res_strings_contry[contry] = str_hash unless contry.nil?
+            @res_strings_lang[lang] = (@res_strings_lang[lang] || {}).merge(str_hash) unless lang.nil?
+            @res_strings_contry[contry] = (@res_strings_contry[contry] || {}).merge(str_hash) unless contry.nil?
           end
         end
       end
