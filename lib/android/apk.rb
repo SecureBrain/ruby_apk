@@ -1,4 +1,4 @@
-require 'zip/zip' # need rubyzip gem -> doc: http://rubyzip.sourceforge.net/
+require 'zip' # need rubyzip gem -> doc: http://rubyzip.sourceforge.net/
 require 'digest/md5'
 require 'digest/sha1'
 require 'digest/sha2'
@@ -40,7 +40,7 @@ module Android
       @path = filepath
       raise NotFoundError, "'#{filepath}'" unless File.exist? @path
       begin
-        @zip = Zip::ZipFile.open(@path)
+        @zip = Zip::File.open(@path)
       rescue Zip::ZipError => e
         raise NotApkFileError, e.message 
       end
@@ -126,7 +126,7 @@ module Android
 
     # find and return zip entry with name
     # @param [String] name file name in apk(fullpath)
-    # @return [Zip::ZipEntry] zip entry object
+    # @return [Zip::Entry] zip entry object
     # @raise [NotFoundError] when 'name' doesn't exist in the apk
     def entry(name)
       entry = @zip.find_entry(name)
