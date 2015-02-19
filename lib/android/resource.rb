@@ -275,11 +275,12 @@ module Android
           end
           lang = type.config.locale_lang
           contry = type.config.locale_contry
+          hash_merge_resolver = proc { |_, *values| values.compact.first }
           if lang.nil? && contry.nil?
-            @res_strings_default.merge!(str_hash)
+            @res_strings_default.merge!(str_hash, &hash_merge_resolver)
           else
-            @res_strings_lang[lang] = (@res_strings_lang[lang] || {}).merge(str_hash) unless lang.nil?
-            @res_strings_contry[contry] = (@res_strings_contry[contry] || {}).merge(str_hash) unless contry.nil?
+            @res_strings_lang[lang] = (@res_strings_lang[lang] || {}).merge(str_hash, &hash_merge_resolver) unless lang.nil?
+            @res_strings_contry[contry] = (@res_strings_contry[contry] || {}).merge(str_hash, &hash_merge_resolver) unless contry.nil?
           end
         end
       end
