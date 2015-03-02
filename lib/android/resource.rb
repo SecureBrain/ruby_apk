@@ -123,7 +123,7 @@ module Android
       # @option opts [String] :contry cantry code like 'jp'...
       # @raise [ArgumentError] invalid id format
       # @note
-      #  This method only support string and drawable resource for now.
+      #  This method only support string and drawable/mipmap resource for now.
       # @note
       #  Always return nil if assign not string type res id.
       #
@@ -135,7 +135,7 @@ module Android
         case type(tid) 
         when 'string'
           return find_res_string(key, opts)
-        when 'drawable'
+        when 'drawable', 'mipmap'
           drawables = []
           @types[tid].each do |type|
             unless type[key].nil?
