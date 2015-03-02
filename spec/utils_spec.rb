@@ -2,12 +2,17 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Android::Utils do
   let(:sample_apk_path) { File.expand_path(File.dirname(__FILE__) + '/data/sample.apk') }
+  let(:sample_new_apk_path) { File.expand_path(File.dirname(__FILE__) + '/data/sample_new.apk') }
   let(:sample_dex_path) { File.expand_path(File.dirname(__FILE__) + '/data/sample_classes.dex') }
   describe '.apk?' do
     subject { Android::Utils.apk?(apk_path) }
 
     context 'assigns apk file path' do
       let(:apk_path) { sample_apk_path }
+      it { should be_true }
+    end
+    context 'assigns new apk file path' do
+      let(:apk_path) { sample_new_apk_path }
       it { should be_true }
     end
     context 'assigns nil' do

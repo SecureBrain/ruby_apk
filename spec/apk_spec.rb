@@ -272,13 +272,22 @@ describe Android::Apk do
       subject { apk.icon }
       it { should be_a Hash }
       it { should have(3).items }
-      it { subject.keys.should =~ ["res/drawable-hdpi/ic_launcher.png", "res/drawable-ldpi/ic_launcher.png", "res/drawable-mdpi/ic_launcher.png"]
- }
+      it { subject.keys.should =~ ["res/drawable-hdpi/ic_launcher.png", "res/drawable-ldpi/ic_launcher.png", "res/drawable-mdpi/ic_launcher.png"]}
+    end
+  end
+
+  describe "#icon" do
+    context "with real new apk file" do
+      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample_new.apk') }
+      subject { apk.icon }
+      it { should be_a Hash }
+      it { should have(4).items }
+      it { subject.keys.should =~ ["res/mipmap-xxhdpi-v4/ic_launcher.png", "res/mipmap-hdpi-v4/ic_launcher.png", "res/mipmap-mdpi-v4/ic_launcher.png", "res/mipmap-xhdpi-v4/ic_launcher.png"]}
     end
   end
 
   describe '#signs' do
-    context 'with sampe apk file' do
+    context 'with sample apk file' do
       let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample.apk') }
       subject { apk.signs }
       it { should be_a Hash }
@@ -288,9 +297,31 @@ describe Android::Apk do
     end
   end
 
+  describe '#signs' do
+    context 'with new sample apk file' do
+      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample_new.apk') }
+      subject { apk.signs }
+      it { should be_a Hash }
+      it { should have(1).item }
+      it { should have_key('META-INF/CERT.RSA') }
+      it { subject['META-INF/CERT.RSA'].should be_a OpenSSL::PKCS7 }
+    end
+  end
+
   describe '#certficates' do
-    context 'with sampe apk file' do
+    context 'with sample apk file' do
       let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample.apk') }
+      subject { apk.certificates }
+      it { should be_a Hash }
+      it { should have(1).item }
+      it { should have_key('META-INF/CERT.RSA') }
+      it { subject['META-INF/CERT.RSA'].should be_a OpenSSL::X509::Certificate }
+    end
+  end
+
+  describe '#certficates' do
+    context 'with new sample apk file' do
+      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample_new.apk') }
       subject { apk.certificates }
       it { should be_a Hash }
       it { should have(1).item }
