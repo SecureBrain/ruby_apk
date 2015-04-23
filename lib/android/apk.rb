@@ -126,7 +126,7 @@ module Android
 
     # find and return zip entry with name
     # @param [String] name file name in apk(fullpath)
-    # @return [Zip::ZipEntry] zip entry object
+    # @return [Zip::Entry] zip entry object
     # @raise [NotFoundError] when 'name' doesn't exist in the apk
     def entry(name)
       entry = @zip.find_entry(name)
