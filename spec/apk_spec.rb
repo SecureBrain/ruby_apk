@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'tempfile'
-require 'zip/zip'
+require 'zip'
 require 'digest/sha1'
 require 'digest/sha2'
 require 'digest/md5'
@@ -18,12 +18,12 @@ class TempApk
     File.unlink(@path) if File.exist? @path
   end
   def append(entry_name, data)
-    Zip::ZipFile.open(@path, Zip::ZipFile::CREATE) { |zip|
+    Zip::File.open(@path, Zip::File::CREATE) { |zip|
       zip.get_output_stream(entry_name) {|f| f.write data }
     }
   end
   def remove(entry_name)
-    Zip::ZipFile.open(@path, Zip::ZipFile::CREATE) { |zip|
+    Zip::File.open(@path, Zip::File::CREATE) { |zip|
       zip.remove(entry_name)
     }
   end
@@ -127,7 +127,7 @@ describe Android::Apk do
   its(:bindata) { should be_instance_of String }
   describe '#bindata' do
     specify 'encoding should be ASCII-8BIT' do
-      subject.bindata.encoding.should eq Encoding::ASCII_8BIT 
+      subject.bindata.encoding.should eq Encoding::ASCII_8BIT
     end
   end
 
@@ -142,7 +142,7 @@ describe Android::Apk do
 
   describe "#size" do
     subject { apk.size }
-    it "should return apk file size" do 
+    it "should return apk file size" do
       should == File.size(tmp_path)
     end
   end
@@ -228,14 +228,14 @@ describe Android::Apk do
     before do
       tmp_apk.append("hoge.txt", "aaaaaaa")
     end
-    it { expect { |b| apk.each_entry(&b) }.to yield_successive_args(Zip::ZipEntry, Zip::ZipEntry, Zip::ZipEntry) }
+    it { expect { |b| apk.each_entry(&b) }.to yield_successive_args(Zip::Entry, Zip::Entry, Zip::Entry) }
   end
 
   describe '#entry' do
     subject { apk.entry(entry_name) }
     context 'assigns exist entry' do
       let(:entry_name) { 'AndroidManifest.xml' }
-      it { should be_instance_of Zip::ZipEntry }
+      it { should be_instance_of Zip::Entry }
     end
     context 'assigns not exist entry name' do
       let(:entry_name) { 'not_exist_path' }
