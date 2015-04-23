@@ -40,8 +40,8 @@ module Android
       @path = filepath
       raise NotFoundError, "'#{filepath}'" unless File.exist? @path
       begin
-        @zip = Zip::ZipFile.open(@path)
-      rescue Zip::ZipError => e
+        @zip = Zip::File.open(@path)
+      rescue Zip::Error => e
         raise NotApkFileError, e.message
       end
 
