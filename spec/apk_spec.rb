@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'tempfile'
-require 'zip/zip'
+require 'zip'
 require 'digest/sha1'
 require 'digest/sha2'
 require 'digest/md5'
@@ -127,7 +127,7 @@ describe Android::Apk do
   its(:bindata) { should be_instance_of String }
   describe '#bindata' do
     specify 'encoding should be ASCII-8BIT' do
-      subject.bindata.encoding.should eq Encoding::ASCII_8BIT 
+      subject.bindata.encoding.should eq Encoding::ASCII_8BIT
     end
   end
 
@@ -142,7 +142,7 @@ describe Android::Apk do
 
   describe "#size" do
     subject { apk.size }
-    it "should return apk file size" do 
+    it "should return apk file size" do
       should == File.size(tmp_path)
     end
   end

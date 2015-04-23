@@ -1,4 +1,4 @@
-require 'zip/zip' # need rubyzip gem -> doc: http://rubyzip.sourceforge.net/
+require 'zip' # need rubyzip gem -> doc: http://rubyzip.sourceforge.net/
 require 'digest/md5'
 require 'digest/sha1'
 require 'digest/sha2'
@@ -42,7 +42,7 @@ module Android
       begin
         @zip = Zip::ZipFile.open(@path)
       rescue Zip::ZipError => e
-        raise NotApkFileError, e.message 
+        raise NotApkFileError, e.message
       end
 
       @bindata = File.open(@path, 'rb') {|f| f.read }
@@ -161,7 +161,7 @@ module Android
       if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ icon_id
         drawables = @resource.find(icon_id)
         Hash[drawables.map {|name| [name, file(name)] }]
-      else 
+      else
         { icon_id => file(icon_id) } # ugh!: not tested!!
       end
     end
