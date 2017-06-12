@@ -1,4 +1,4 @@
-require 'zip/zip' # need rubyzip gem -> doc: http://rubyzip.sourceforge.net/
+require 'zip'
 require 'digest/md5'
 require 'digest/sha1'
 require 'digest/sha2'
@@ -13,17 +13,8 @@ module Android
 
     # @return [String] apk file path
     attr_reader :path
-    # @return [Android::Manifest] manifest instance
-    # @return [nil] when parsing manifest is failed.
-    attr_reader  :manifest
-    # @return [Android::Dex] dex instance
-    # @return [nil] when parsing dex is failed.
-    attr_reader :dex
     # @return [String] binary data of apk
     attr_reader :bindata
-    # @return [Resource] resouce data
-    # @return [nil] when parsing resource is failed.
-    attr_reader :resource
 
     # AndroidManifest file name
     MANIFEST = 'AndroidManifest.xml'
@@ -34,13 +25,13 @@ module Android
 
     # create new apk object
     # @param [String] filepath apk file path
-    # @raise [Android::NotFoundError] path file does'nt exist
+    # @raise [Android::NotFoundError] path file doesn't exist
     # @raise [Android::NotApkFileError] path file is not Apk file.
     def initialize(filepath)
       @path = filepath
       raise NotFoundError, "'#{filepath}'" unless File.exist? @path
       begin
-        @zip = Zip::ZipFile.open(@path)
+        @zip = Zip::File.open(@path)
       rescue Zip::ZipError => e
         raise NotApkFileError, e.message 
       end
@@ -48,24 +39,48 @@ module Android
       @bindata = File.open(@path, 'rb') {|f| f.read }
       @bindata.force_encoding(Encoding::ASCII_8BIT)
       raise NotApkFileError, "manifest file is not found." if @zip.find_entry(MANIFEST).nil?
-      begin
-        @resource = Android::Resource.new(self.file(RESOURCE))
-      rescue => e
-        $stderr.puts "failed to parse resource:#{e}"
-        #$stderr.puts e.backtrace
+    end
+
+    # @return [Android::Manifest] manifest instance
+    # @return [nil] when parsing manifest is failed.
+    def manifest
+      unless @manifest
+        begin
+          @manifest = Android::Manifest.new(self.file(MANIFEST), resource)
+        rescue => e
+          $stderr.puts "failed to parse manifest:#{e}"
+          #$stderr.puts e.backtrace
+        end
       end
-      begin
-        @manifest = Android::Manifest.new(self.file(MANIFEST), @resource)
-      rescue => e
-        $stderr.puts "failed to parse manifest:#{e}"
-        #$stderr.puts e.backtrace
+      @manifest
+    end
+
+    # @return [Android::Dex] dex instance
+    # @return [nil] when parsing dex is failed.
+    def dex
+      unless @dex
+        begin
+          @dex = Android::Dex.new(self.file(DEX))
+        rescue => e
+          $stderr.puts "failed to parse dex:#{e}"
+          #$stderr.puts e.backtrace
+        end
       end
-      begin
-        @dex = Android::Dex.new(self.file(DEX))
-      rescue => e
-        $stderr.puts "failed to parse dex:#{e}"
-        #$stderr.puts e.backtrace
+      @dex
+    end
+
+    # @return [Resource] resource data
+    # @return [nil] when parsing resource is failed.
+    def resource
+      unless @resource
+        begin
+          @resource = Android::Resource.new(self.file(RESOURCE))
+        rescue => e
+          $stderr.puts "failed to parse resource:#{e}"
+          #$stderr.puts e.backtrace
+        end
       end
+      @resource
     end
 
     # return apk file size
@@ -77,7 +92,7 @@ module Android
     # return hex digest string of apk file
     # @param [Symbol] type hash digest type(:sha1, sha256, :md5)
     # @return [String] hex digest string
-    # @raise [ArgumentError] type is knknown type
+    # @raise [ArgumentError] type is known type
     def digest(type = :sha1)
       case type
       when :sha1
@@ -126,12 +141,12 @@ module Android
 
     # find and return zip entry with name
     # @param [String] name file name in apk(fullpath)
-    # @return [Zip::ZipEntry] zip entry object
+    # @return [Zip::Entry] zip entry object
     # @raise [NotFoundError] when 'name' doesn't exist in the apk
     def entry(name)
       entry = @zip.find_entry(name)
       raise NotFoundError, "'#{name}'" if entry.nil?
-      return entry
+      entry
     end
 
     # find files which is matched with block condition
@@ -157,9 +172,9 @@ module Android
     # @raise [NotFoundError]
     # @since 0.6.0
     def icon
-      icon_id = @manifest.doc.elements['/manifest/application'].attributes['icon']
+      icon_id = manifest.doc.elements['/manifest/application'].attributes['icon']
       if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ icon_id
-        drawables = @resource.find(icon_id)
+        drawables = resource.find(icon_id)
         Hash[drawables.map {|name| [name, file(name)] }]
       else 
         { icon_id => file(icon_id) } # ugh!: not tested!!
@@ -173,11 +188,11 @@ module Android
     # @deprecated move to {Android::Manifest#label}
     # @since 0.6.0
     def label(lang=nil)
-      @manifest.label
+      manifest.label
     end
 
     # get screen layout xml datas
-    # @return [Hash{ String => Android::Layout }] key: laytout file path, value: layout object
+    # @return [Hash{ String => Android::Layout }] key: layout file path, value: layout object
     # @since 0.6.0
     def layouts
       @layouts ||= Layout.collect_layouts(self) # lazy parse
@@ -197,7 +212,7 @@ module Android
     end
 
     # certificate info which is used for signing
-    # @return [Hash{String => OpenSSL::X509::Certificate }] key: sign file path, value: first certficate in the sign file
+    # @return [Hash{String => OpenSSL::X509::Certificate }] key: sign file path, value: first certificate in the sign file
     # @since 0.7.0
     def certificates
       return Hash[self.signs.map{|path, sign| [path, sign.certificates.first] }]
