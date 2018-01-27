@@ -23,5 +23,19 @@ describe Android::Layout do
       end
     end
   end
+
+  context 'with real new apk sample file' do
+    let(:apk_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample_new.apk') }
+    let(:apk){ Android::Apk.new(apk_path) }
+    let(:layouts) { apk.layouts }
+    subject { layouts }
+    it { should be_a Hash }
+    it { should have_key "res/layout/activity_main.xml" }
+    it { should have(1).item }
+    context 'about first item' do
+      subject { layouts['res/layout/activity_main.xml'] }
+      it { should be_a Android::Layout }
+    end
+  end
 end
 

@@ -1,5 +1,4 @@
 # encoding: utf-8
-require 'ruby_apk'
 require 'rexml/document'
 
 module Android

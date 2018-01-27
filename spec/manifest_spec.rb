@@ -25,7 +25,7 @@ describe Android::Manifest do
       subject { Android::Manifest::Component.new(elem).metas }
       context 'with valid component element has 2 meta elements' do
         let(:elem) { 
-          elem = REXML::Element.new('service') 
+          elem = REXML::Element.new('service')
           elem << REXML::Element.new('meta-data')
           elem << REXML::Element.new('meta-data')
           elem
@@ -187,6 +187,13 @@ describe Android::Manifest do
           subject { manifest.label('ja') }
           it { should eq 'Sample' }
         end
+      end
+      context "with real new apk file" do
+        let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample_new.apk') }
+        let(:apk) { Android::Apk.new(tmp_path) }
+        let(:manifest){ apk.manifest }
+        subject { manifest.label }
+        it { should eq 'My Application' }
       end
     end
     describe "#doc" do

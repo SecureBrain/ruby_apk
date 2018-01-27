@@ -123,7 +123,7 @@ module Android
       # @option opts [String] :contry cantry code like 'jp'...
       # @raise [ArgumentError] invalid id format
       # @note
-      #  This method only support string and drawable resource for now.
+      #  This method only support string and drawable/mipmap resource for now.
       # @note
       #  Always return nil if assign not string type res id.
       #
@@ -135,7 +135,7 @@ module Android
         case type(tid) 
         when 'string'
           return find_res_string(key, opts)
-        when 'drawable'
+        when 'drawable', 'mipmap'
           drawables = []
           @types[tid].each do |type|
             unless type[key].nil?
@@ -255,6 +255,7 @@ module Android
       private :parse
 
       def extract_res_strings
+        @res_strings_default = {}
         @res_strings_lang = {}
         @res_strings_contry = {}
         begin
@@ -274,11 +275,12 @@ module Android
           end
           lang = type.config.locale_lang
           contry = type.config.locale_contry
+          hash_merge_resolver = proc { |_, *values| values.compact.first }
           if lang.nil? && contry.nil?
-            @res_strings_default = str_hash
+            @res_strings_default.merge!(str_hash, &hash_merge_resolver)
           else
-            @res_strings_lang[lang] = str_hash unless lang.nil?
-            @res_strings_contry[contry] = str_hash unless contry.nil?
+            @res_strings_lang[lang] = (@res_strings_lang[lang] || {}).merge(str_hash, &hash_merge_resolver) unless lang.nil?
+            @res_strings_contry[contry] = (@res_strings_contry[contry] || {}).merge(str_hash, &hash_merge_resolver) unless contry.nil?
           end
         end
       end

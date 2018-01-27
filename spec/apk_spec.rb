@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'tempfile'
-require 'zip/zip'
+require 'zip'
 require 'digest/sha1'
 require 'digest/sha2'
 require 'digest/md5'
@@ -18,12 +18,12 @@ class TempApk
     File.unlink(@path) if File.exist? @path
   end
   def append(entry_name, data)
-    Zip::ZipFile.open(@path, Zip::ZipFile::CREATE) { |zip|
+    Zip::File.open(@path, Zip::File::CREATE) { |zip|
       zip.get_output_stream(entry_name) {|f| f.write data }
     }
   end
   def remove(entry_name)
-    Zip::ZipFile.open(@path, Zip::ZipFile::CREATE) { |zip|
+    Zip::File.open(@path, Zip::File::CREATE) { |zip|
       zip.remove(entry_name)
     }
   end
@@ -228,14 +228,14 @@ describe Android::Apk do
     before do
       tmp_apk.append("hoge.txt", "aaaaaaa")
     end
-    it { expect { |b| apk.each_entry(&b) }.to yield_successive_args(Zip::ZipEntry, Zip::ZipEntry, Zip::ZipEntry) }
+    it { expect { |b| apk.each_entry(&b) }.to yield_successive_args(Zip::Entry, Zip::Entry, Zip::Entry) }
   end
 
   describe '#entry' do
     subject { apk.entry(entry_name) }
     context 'assigns exist entry' do
       let(:entry_name) { 'AndroidManifest.xml' }
-      it { should be_instance_of Zip::ZipEntry }
+      it { should be_instance_of Zip::Entry }
     end
     context 'assigns not exist entry name' do
       let(:entry_name) { 'not_exist_path' }
@@ -272,13 +272,22 @@ describe Android::Apk do
       subject { apk.icon }
       it { should be_a Hash }
       it { should have(3).items }
-      it { subject.keys.should =~ ["res/drawable-hdpi/ic_launcher.png", "res/drawable-ldpi/ic_launcher.png", "res/drawable-mdpi/ic_launcher.png"]
- }
+      it { subject.keys.should =~ ["res/drawable-hdpi/ic_launcher.png", "res/drawable-ldpi/ic_launcher.png", "res/drawable-mdpi/ic_launcher.png"]}
+    end
+  end
+
+  describe "#icon" do
+    context "with real new apk file" do
+      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample_new.apk') }
+      subject { apk.icon }
+      it { should be_a Hash }
+      it { should have(4).items }
+      it { subject.keys.should =~ ["res/mipmap-xxhdpi-v4/ic_launcher.png", "res/mipmap-hdpi-v4/ic_launcher.png", "res/mipmap-mdpi-v4/ic_launcher.png", "res/mipmap-xhdpi-v4/ic_launcher.png"]}
     end
   end
 
   describe '#signs' do
-    context 'with sampe apk file' do
+    context 'with sample apk file' do
       let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample.apk') }
       subject { apk.signs }
       it { should be_a Hash }
@@ -288,9 +297,31 @@ describe Android::Apk do
     end
   end
 
+  describe '#signs' do
+    context 'with new sample apk file' do
+      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample_new.apk') }
+      subject { apk.signs }
+      it { should be_a Hash }
+      it { should have(1).item }
+      it { should have_key('META-INF/CERT.RSA') }
+      it { subject['META-INF/CERT.RSA'].should be_a OpenSSL::PKCS7 }
+    end
+  end
+
   describe '#certficates' do
-    context 'with sampe apk file' do
+    context 'with sample apk file' do
       let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample.apk') }
+      subject { apk.certificates }
+      it { should be_a Hash }
+      it { should have(1).item }
+      it { should have_key('META-INF/CERT.RSA') }
+      it { subject['META-INF/CERT.RSA'].should be_a OpenSSL::X509::Certificate }
+    end
+  end
+
+  describe '#certficates' do
+    context 'with new sample apk file' do
+      let(:tmp_path){ File.expand_path(File.dirname(__FILE__) + '/data/sample_new.apk') }
       subject { apk.certificates }
       it { should be_a Hash }
       it { should have(1).item }
