@@ -158,6 +158,28 @@ module Android
       @doc = parser.parse
       @rsc = rsc
     end
+    
+    # supports screens array
+    # @return [Array<String>] screen names
+    # @note return all screen types array when the manifest includes no supports-screens element
+    def supports_screens
+      screens = ["small", "normal", "large", "xlarge"]
+      unless @doc.elements['/manifest/supports-screens'].nil?
+        if @doc.elements['/manifest/supports-screens'].attributes['smallScreens'] == "false"
+          screens.delete "small"
+        end
+        if @doc.elements['/manifest/supports-screens'].attributes['normalScreens'] == "false"
+          screens.delete "normal"
+        end
+        if @doc.elements['/manifest/supports-screens'].attributes['largeScreens'] == "false"
+          screens.delete "large"
+        end
+        if @doc.elements['/manifest/supports-screens'].attributes['xlargeScreens'] == "false"
+          screens.delete "xlarge"
+        end
+      end
+      screens.uniq
+    end
 
     # used permission array
     # @return [Array<String>] permission names
@@ -196,13 +218,19 @@ module Android
 
     # application version name
     # @return [String]
-    def version_name(lang=nil)
+    def version_name(lang=nil, default=true)
       vername = @doc.root.attributes['versionName']
       unless @rsc.nil?
         if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ vername
           opts = {}
-          opts[:lang] = lang unless lang.nil?
-          vername = @rsc.find(vername, opts)
+          unless lang.nil?
+            if lang.is_a? Hash
+              opts = lang
+            elsif lang.is_a? String
+              opts[:lang] = lang
+            end
+          end
+          vername = @rsc.find(vername, opts, default)
         end
       end
       vername
@@ -212,13 +240,23 @@ module Android
     def min_sdk_ver
       @doc.elements['/manifest/uses-sdk'].attributes['minSdkVersion'].to_i
     end
+    
+    # @return [Integer] maxSdkVersion in uses element
+    def max_sdk_ver
+      @doc.elements['/manifest/uses-sdk'].attributes['maxSdkVersion'].to_i
+    end
+    
+    # @return [Integer] targetSdkVersion in uses element
+    def target_sdk_ver
+      @doc.elements['/manifest/uses-sdk'].attributes['targetSdkVersion'].to_i
+    end
 
     # application label
     # @param [String] lang language code like 'ja', 'cn', ...
     # @return [String] application label string(if resouce is provided), or label resource id
     # @return [nil] when label is not found
     # @since 0.5.1
-    def label(lang=nil)
+    def label(lang=nil, default=true)
       label = @doc.elements['/manifest/application'].attributes['label']
       if label.nil?
         # application element has no label attributes.
@@ -229,8 +267,14 @@ module Android
       unless @rsc.nil?
         if /^@(\w+\/\w+)|(0x[0-9a-fA-F]{8})$/ =~ label
           opts = {}
-          opts[:lang] = lang unless lang.nil?
-          label = @rsc.find(label, opts)
+          unless lang.nil?
+            if lang.is_a? Hash
+              opts = lang
+            elsif lang.is_a? String
+              opts[:lang] = lang
+            end
+          end
+          label = @rsc.find(label, opts, default)
         end
       end
       label

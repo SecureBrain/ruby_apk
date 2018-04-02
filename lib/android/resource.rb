@@ -127,14 +127,14 @@ module Android
       # @note
       #  Always return nil if assign not string type res id.
       #
-      def find(res_id, opts={})
+      def find(res_id, opts={}, default=true)
         hex_id = strid2int(res_id)
         tid = ((hex_id&0xff0000) >>16)
         key = hex_id&0xffff
 
         case type(tid) 
         when 'string'
-          return find_res_string(key, opts)
+          return find_res_string(key, opts, default)
         when 'drawable'
           drawables = []
           @types[tid].each do |type|
@@ -150,14 +150,19 @@ module Android
 
       def res_types
       end
-      def find_res_string(key, opts={})
-        unless opts[:lang].nil?
-          string = @res_strings_lang[opts[:lang]]
+      def find_res_string(key, opts={}, default=true)
+        unless opts[:contry].nil? || opts[:lang].nil?
+          string = @res_strings_locale["#{opts[:lang]}-#{opts[:contry]}"]
         end
-        unless opts[:contry].nil?
-          string = @res_strings_contry[opts[:contry]]
+        if string.nil?
+          unless opts[:lang].nil?
+            string = @res_strings_lang[opts[:lang]]
+          end
+          unless opts[:contry].nil?
+            string = @res_strings_contry[opts[:contry]]
+          end
         end
-        string = @res_strings_default if string.nil?
+        string = default ? @res_strings_default : {} if string.nil?
         raise NotFoundError unless string.has_key? key
         return string[key]
       end
@@ -255,6 +260,7 @@ module Android
       private :parse
 
       def extract_res_strings
+        @res_strings_locale = {}
         @res_strings_lang = {}
         @res_strings_contry = {}
         begin
@@ -277,6 +283,7 @@ module Android
           if lang.nil? && contry.nil?
             @res_strings_default = str_hash
           else
+            @res_strings_locale["#{lang}-#{contry}"] = str_hash unless lang.nil? || contry.nil?
             @res_strings_lang[lang] = str_hash unless lang.nil?
             @res_strings_contry[contry] = str_hash unless contry.nil?
           end
@@ -475,8 +482,8 @@ module Android
     # @note
     #  Always return nil if assign not string type res id.
     # @since 0.5.0
-    def find(rsc_id, opt={})
-      first_pkg.find(rsc_id, opt)
+    def find(rsc_id, opt={}, default=true)
+      first_pkg.find(rsc_id, opt, default)
     end
 
     # @param [String] hex_id hexoctet format resource id('@0x7f010001')
